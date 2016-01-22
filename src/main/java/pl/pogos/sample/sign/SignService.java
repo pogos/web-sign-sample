@@ -21,8 +21,34 @@ public class SignService {
         return keyGen.generateKeyPair();
     }
 
-    public String getKeyAsString(Key key) {
+    public String getKey(Key key) {
         return Base64.getEncoder().encodeToString(key.getEncoded());
+    }
+
+    public String getKey(String strKey) {
+        return null;
+    }
+
+    public void verifySignarure() throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+        String test = "Test test";
+        KeyPair keyPair = generateKeyPair();
+
+        Signature signature = Signature.getInstance("EC");
+        PublicKey pubKey = keyPair.getPublic();
+        signature.initVerify(pubKey);
+
+        signature.verify(test.getBytes());
+
+
+    }
+
+    public void sign(PrivateKey privateKey, String text) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+        Signature signature = Signature.getInstance("EC");
+        signature.initSign(privateKey);
+
+
+        signature.update(text.getBytes());
+        byte[] sign = signature.sign();
     }
 
 //    public static void main(String[] args) throws Exception {
